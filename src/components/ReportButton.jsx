@@ -10,14 +10,14 @@ import 'jspdf-autotable';
 const Modal = ({ setPreco, setIsOpen, isOpen, handleExportPDF }) => {
 
   return (
-    <dialog open={isOpen} className='fixed flex items-center justify-center  top-0 left-0 bg-black/50 w-full min-h-screen'>
-      <div className='bg-white shadow-lg rounded-md p-6 w-1/3 h-fit relative'>
+    <dialog open={isOpen} className='fixed flex p-6 items-center justify-center  top-0 left-0 bg-black/50 w-full min-h-screen'>
+      <div className='bg-white shadow-lg rounded-md p-6 w-full md:w-1/3 h-fit relative'>
         <button
           onClick={() => setIsOpen(false)}
           className='text-xl text-red-500 cursor-pointer  absolute top-3 right-5'>
           X
         </button>
-        <h2 className='text-xl text-gray-300 font-semibold mb-6'>Digite o valor da refeição</h2>
+        <h2 className='text-xl text-gray-500 font-semibold mb-6'>Digite o valor da refeição</h2>
         <div className='flex flex-col gap-1'>
           <label htmlFor="">Valor:</label>
           <input
