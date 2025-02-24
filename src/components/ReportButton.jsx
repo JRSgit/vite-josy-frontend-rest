@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 
@@ -7,7 +8,12 @@ import { utils, writeFile } from 'xlsx';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
-const Modal = ({ setPreco, setIsOpen, isOpen, handleExportPDF }) => {
+const Modal = ({
+  setPrecoCafe,
+  setPrecoAlmoco,
+  setIsOpen,
+  isOpen,
+  handleExportPDF }) => {
 
   return (
     <dialog open={isOpen} className='fixed flex p-6 items-center justify-center  top-0 left-0 bg-black/50 w-full min-h-screen'>
@@ -17,14 +23,33 @@ const Modal = ({ setPreco, setIsOpen, isOpen, handleExportPDF }) => {
           className='text-xl text-red-500 cursor-pointer  absolute top-3 right-5'>
           X
         </button>
-        <h2 className='text-xl text-gray-500 font-semibold mb-6'>Digite o valor da refeição</h2>
-        <div className='flex flex-col gap-1'>
-          <label htmlFor="">Valor:</label>
-          <input
-            className='w-[200px] bg-gray-300 p-2 rounded-md mb-4'
-            onChange={(e) => setPreco(parseInt(e.target.value))}
-            type="number" placeholder='Digite o valor' min={0}
-          />
+        <h2 className='text-xl text-gray-500 font-semibold mb-6'>Digite o valor das refeições</h2>
+        <div className='flex max-sm:flex-col items-center gap-4'>
+          <div className='flex flex-col gap-1'>
+            <label htmlFor="">Valor do café:</label>
+            <input
+              className='w-[100px] bg-gray-300 md:p-2 p-1 rounded-md md:mb-4'
+              onChange={(e) => setPrecoCafe(parseInt(e.target.value))}
+              type="number" placeholder='Valor' min={0}
+            />
+          </div>
+          <div className='flex flex-col gap-1 items-center'>
+            <label htmlFor="">Valor do almoço:</label>
+            <input
+              className='w-[100px] bg-gray-300 md:p-2 p-1 rounded-md md:mb-4'
+              onChange={(e) => setPrecoAlmoco(parseInt(e.target.value))}
+              type="number" placeholder='Valor' min={0}
+            />
+          </div>
+          {/* <div className='flex flex-col gap-1'>
+            <label htmlFor="">Valor da janta:</label>
+            <input
+              className='w-[100px] bg-gray-300 md:p-2 p-1 rounded-md md:mb-4'
+              onChange={(e) =parseInt(e.target.value))}
+              type="number" placeholder='Valor' min={0}
+            />
+          </div> */}
+
         </div>
         <button
           onClick={() => handleExportPDF()}
@@ -39,7 +64,12 @@ const Modal = ({ setPreco, setIsOpen, isOpen, handleExportPDF }) => {
 const ReportButton = ({ data }) => {
   const { slug } = useParams()
   const [isOpen, setIsOpen] = useState(false)
-  const [preco, setPreco] = useState(0)
+  const [precoCafe, setPrecoCafe] = useState(0)
+  // const [precoJanta, setPrecoJanta] = useState(0)
+  const [precoAlmoco, setPrecoAlmoco] = useState(0)
+  const [cafe, setCafe] = useState(() => data.filter((item) => item.refeicao === 'Café'))
+  const [janta, setJanta] = useState(() => data.filter((item) => item.refeicao === 'Janta'))
+  const [almoco, setAlmoco] = useState(() => data.filter((item) => item.refeicao === 'Almoço'))
 
   // const uper = toString(slug).toUpperCase()
   const handleExportExcel = () => {
@@ -49,6 +79,7 @@ const ReportButton = ({ data }) => {
     writeFile(wb, 'relatorio.xlsx');
   };
 
+
   const handleExportPDF = () => {
     const doc = new jsPDF();
     doc.text(`Relatório dos Pedidos da ${slug.toUpperCase()}`, 10, 10);
@@ -56,9 +87,20 @@ const ReportButton = ({ data }) => {
     // Define um valor predefinido para multiplicação (exemplo: R$ 5.00 por unidade)
     // const precoUnitario = 5.00;
 
-    // Calcula o total de quantidades
-    const totalQuantidade = data.reduce((sum, item) => sum + item.quantidade, 0);
-    const valorTotal = totalQuantidade * preco;
+    // Calcula o total de quantidades de Café
+    const totalQuantidadeCafe = cafe.reduce((sum, item) => sum + item.quantidade, 0);
+    const valorTotalCafe = totalQuantidadeCafe * precoCafe;
+
+    // Calcula o total de quantidades Janta
+    const totalQuantidadeJanta = janta.reduce((sum, item) => sum + item.quantidade, 0);
+    const valorTotalJanta = totalQuantidadeJanta * precoAlmoco;
+
+    // Calcula o total de quantidades Almoço
+    const totalQuantidadeAlmoco = almoco.reduce((sum, item) => sum + item.quantidade, 0);
+    const valorTotalAlmoco = totalQuantidadeAlmoco * precoAlmoco;
+
+    const totalQuantidadeRefeicao = totalQuantidadeCafe + totalQuantidadeJanta + totalQuantidadeAlmoco
+    const valorQuantidadeRefeicao = valorTotalCafe + valorTotalJanta + valorTotalAlmoco
 
     // Adiciona a tabela
     doc.autoTable({
@@ -72,9 +114,12 @@ const ReportButton = ({ data }) => {
 
     // Adiciona o total de itens e o valor calculado abaixo da tabela
     doc.text(`Total de: ${data.length} dias`, 10, finalY);
-    doc.text(`Total de refeições entregues nesse período: ${totalQuantidade}`, 10, finalY + 10);
-    doc.text(`Valor Total: R$ ${valorTotal.toFixed(2)}`, 10, finalY + 20);
-    doc.text(`Josy Restaurante`, 80, finalY + 40);
+    doc.text(`Total de refeições entregues nesse período: ${totalQuantidadeRefeicao}`, 10, finalY + 10);
+    doc.text(`Valor Total do Café: R$ ${valorTotalCafe.toFixed(2)}`, 10, finalY + 20);
+    doc.text(`Valor Total do Janta: R$ ${valorTotalJanta.toFixed(2)}`, 10, finalY + 30);
+    doc.text(`Valor Total do Almoço: R$ ${valorTotalAlmoco.toFixed(2)}`, 10, finalY + 40);
+    doc.text(`Valor Total das Refeições: R$ ${valorQuantidadeRefeicao.toFixed(2)}`, 10, finalY + 55);
+    doc.text(`Josy Restaurante`, 80, finalY + 75);
 
     // Salva o PDF
     doc.save('relatorio.pdf');
@@ -96,7 +141,8 @@ const ReportButton = ({ data }) => {
       </div>
       {
         isOpen ? (
-          <Modal setPreco={setPreco} isOpen={isOpen}
+          <Modal setPrecoCafe={setPrecoCafe}
+            setPrecoAlmoco={setPrecoAlmoco} isOpen={isOpen}
             setIsOpen={setIsOpen} handleExportPDF={handleExportPDF} />
 
         ) : ('')

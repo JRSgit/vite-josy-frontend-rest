@@ -63,14 +63,14 @@ const Table = ({ data }) => {
 }
 
 const Entregas = () => {
-  const { items } = useContext(AppContext)
+  const { items, empresas } = useContext(AppContext)
 
   const [itemFiltrado, setItemFiltrado] = useState()
 
   const [cafe, setCafe] = useState()
   const [almoco, setAlmoco] = useState()
   const [janta, setJanta] = useState()
-  const [empresas, setEmpresas] = useState()
+  const [empresasUnicas, setEmpresasUnicas] = useState()
 
   const [filtros, setFiltros] = useState({
     dataInicio: "",
@@ -81,9 +81,9 @@ const Entregas = () => {
 
 
   useEffect(() => {
-    const empesa = items.map((item) => item.empresa)
+    const empesa = empresas.map((item) => item.name)
     const empresaUnicas = [...new Set(empesa)]
-    setEmpresas(empresaUnicas)
+    setEmpresasUnicas(empresaUnicas)
   }, [items])
 
   useEffect(() => {
@@ -104,9 +104,9 @@ const Entregas = () => {
 
 
   const empresaFiltrarItems = (emp) => {
-    const cafe = itemFiltrado.filter((item) => item.refeicao === 'Café' && item.empresa === emp)
-    const almoco = itemFiltrado.filter((item) => item.refeicao === 'Almoço' && item.empresa === emp)
-    const janta = itemFiltrado.filter((item) => item.refeicao === 'Janta' && item.empresa === emp)
+    const cafe = itemFiltrado.filter((item) => item.refeicao === 'Café' && item.empresa === emp.toLowerCase())
+    const almoco = itemFiltrado.filter((item) => item.refeicao === 'Almoço' && item.empresa === emp.toLowerCase())
+    const janta = itemFiltrado.filter((item) => item.refeicao === 'Janta' && item.empresa === emp.toLowerCase())
 
     setCafe(cafe)
     setAlmoco(almoco)
@@ -141,10 +141,10 @@ const Entregas = () => {
           <h1 className='md:text-xl text-md font-bold mb-3'>Escolha a Empresa</h1>
           <div className='flex flex-wrap gap-4'>
             {
-              empresas && empresas.map((item) => (
+              empresasUnicas && empresasUnicas.map((item) => (
                 <button
                   onClick={() => empresaFiltrarItems(item)}
-                  className='bg-gray-400 md:text-md text-sm cursor-pointer px-3 py-1 rounded-md uppercase text-white' key={item}>{item}</button>
+                  className='bg-gray-400 md:text-md  text-sm cursor-pointer px-3 py-1 rounded-md uppercase text-white' key={item}>{item}</button>
               ))
             }
 

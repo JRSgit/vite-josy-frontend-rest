@@ -9,7 +9,7 @@ const EmpresaCadastrada = () => {
   return (
     <div className="w-full ">
       <h1 className="md:text-2xl text-xl mb-3 text-gray-500 font-semibold">Empresas Cadatradas</h1>
-      <ul className="flex md:flex-col flex-wrap items-center justify-center gap-3 p-6 rounded-lg bg-white shadow-2xl">
+      <ul className="flex md:grid md:grid-cols-4 flex-wrap items-center justify-center gap-3 p-6 rounded-lg bg-white shadow-2xl">
         {
           empresas && empresas.map((empresa, i) => (
             <Link key={i}
