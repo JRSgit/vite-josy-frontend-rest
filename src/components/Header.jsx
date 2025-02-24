@@ -17,16 +17,16 @@ const Header = () => {
   }
 
   return (
-    <nav className="flex items-center justify-between px-6 h-20 w-full bg-slate-500">
+    <nav className="flex items-center justify-between px-6 h-20 w-full bg-white shadow-2xl">
       <div className="flex flex-col  items-center">
         <img className="" src={logo} alt="" />
         {/* <h1 className="text-3xl text-orange-500 font-bold">Josy</h1>
         <h3 className="text-xl text-gray-200 font-semibold">Restaurante</h3> */}
       </div>
       <ul className=" flex max-sm:flex-col  md:gap-2 items-center text-orange-500 text-sm md:text-lg font-bold">
-        <Link to='/' className="cursor-pointer hover:border-b-2 border-white transition-all">Home</Link>
-        <Link to='/entregas' className="cursor-pointer hover:border-b-2 border-white transition-all">Entregas</Link>
-        <Link to='/empresas' className="cursor-pointer hover:border-b-2 border-white transition-all">Empresas</Link>
+        <Link to='/' className="cursor-pointer hover:border-b-2 border-orange-500 transition-all">Home</Link>
+        <Link to='/entregas' className="cursor-pointer hover:border-b-2 border-orange-500 transition-all">Entregas</Link>
+        <Link to='/empresas' className="cursor-pointer hover:border-b-2 border-orange-500 transition-all">Empresas</Link>
       </ul>
       <div className="flex flex-col items-center ">
         <img
@@ -35,7 +35,7 @@ const Header = () => {
         />
         <h3
           onClick={() => handleLogoutSend()}
-          className="text-gray-50 font-bold cursor-pointer hover:border-orange-500 hover:border-b">{
+          className="text-gray-400 font-bold cursor-pointer hover:border-orange-500 hover:border-b">{
             user.name
           }</h3>
 

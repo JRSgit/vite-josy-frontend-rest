@@ -8,13 +8,13 @@ const EmpresaCadastrada = () => {
 
   return (
     <div className="w-full ">
-      <h1 className="text-2xl mb-3 text-gray-500 font-semibold">Empresas Cadatradas</h1>
-      <ul className="flex flex-col items-center justify-center gap-3 p-6 rounded-lg bg-white shadow-2xl">
+      <h1 className="md:text-2xl text-xl mb-3 text-gray-500 font-semibold">Empresas Cadatradas</h1>
+      <ul className="flex md:flex-col flex-wrap items-center justify-center gap-3 p-6 rounded-lg bg-white shadow-2xl">
         {
           empresas && empresas.map((empresa, i) => (
             <Link key={i}
               to={`/add_servico/${empresa.name.toLowerCase()}`}
-              className="hover:bg-gray-300 lo  cursor-pointer uppercase transition-all w-full p-2 rounded- text-center rounded-lg">
+              className="hover:bg-gray-400 bg-gray-200 text-sm text-md cursor-pointer uppercase transition-all w-fit p-2 rounded- text-center rounded-lg">
               {empresa.name}
             </Link>
           ))

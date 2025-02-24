@@ -12,8 +12,8 @@ const UltimasEntregas = () => {
 
   return (
     <div className="w-full ">
-      <h1 className="text-2xl mb-3 text-gray-500 font-semibold">Entregas de hoje</h1>
-      <table className="w-full table p-6 rounded-lg bg-white shadow-2xl shadow-2xl rounded-lg overflow-hidden">
+      <h1 className="md:text-2xl text-xl mb-3 text-gray-500 font-semibold">Entregas de hoje</h1>
+      <table className="w-full table p-6 rounded-lg bg-white shadow-2xl  overflow-hidden">
         <thead className=" bg-gray-300">
           <tr className="">
             <th>Empresa</th>
@@ -26,8 +26,8 @@ const UltimasEntregas = () => {
             filtrarItems && filtrarItems.map((item, i) => (
               <tr key={item.id}
                 className={`w-full ${i % 2 === 1 ? 'bg-gray-100' : ''} rounded-lg text-center p-2 `}>
-                <td className="uppercase">{item.empresa}</td>
-                <td className="capitalize">{item.refeicao}</td>
+                <td className="uppercase text-sm md:text-md">{item.empresa}</td>
+                <td className="capitalize text-sm md:text-md">{item.refeicao}</td>
                 <td className="">{item.quantidade}</td>
               </tr>
 

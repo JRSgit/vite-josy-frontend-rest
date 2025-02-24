@@ -16,42 +16,42 @@ const Table = ({ data }) => {
     setValorTotal(valor_total)
   }
   return (
-    <div className='bg-white shadow-2xl p-4'>
+    <div className='bg-white shadow-2xl p-4 rounded-lg'>
       <table className='table w-full'>
         <thead>
           <tr className='text-center bg-gray-200'>
-            <th className='p-2'>Empresa</th>
-            <th className='p-2'>Refeição</th>
-            <th className='p-2'>Qauntidade</th>
+            <th className='md:p-2 p-1 text-sm'>Empresa</th>
+            <th className='md:p-2 p-1 text-sm'>Refeição</th>
+            <th className='md:p-2 p-1 text-sm'>Qauntidade</th>
           </tr>
         </thead>
         <tbody>
           {
             data && data.map((item, i) => (
               <tr className='text-center' key={i}>
-                <td>{item.empresa}</td>
-                <td>{item.refeicao}</td>
-                <td>{item.quantidade}</td>
+                <td className='text-sm'>{item.empresa}</td>
+                <td className='text-sm'>{item.refeicao}</td>
+                <td className='text-sm'>{item.quantidade}</td>
               </tr>
             ))
           }
         </tbody>
       </table>
-      <div className='flex flex-col w-full items-center gap-3  mt-8'>
+      <div className='flex flex-col w-full items-center md:gap-3 gap-1 mt-4  md:mt-8'>
         <div className='flex flex-col items-center bg-gray-50 p-2 rounded-md'>
-          <label htmlFor="valor">Digite um valor:</label>
+          <label className='text-[16px] md:text-md' htmlFor="valor">Digite um valor:</label>
           <input
-            className='bg-gray-200 p-2 w-fit'
+            className='bg-gray-200 md:p-2 p-1 text-sm nd: text-md md:w-fit w-[80px] rounded-md'
             onChange={(e) => setValor(e.target.value)} type="number" min={0} />
         </div>
         <div className='flex justify-between w-full items-center bg-gray-50 p-2 rounded-md'>
           <div className='flex items-center gap-2'>
-            <h1 className='text-xl text-blue-500 font-bold '>Total R$:</h1>
+            <h1 className='md:text-xl text-md text-blue-500 font-bold '>Total R$:</h1>
             <span>{valorTotal}</span>
           </div>
           <button
             onClick={() => calcularValor(data)}
-            className='px-4 py-2 bg-blue-500 rounded-md'>
+            className='md:px-4 px-2 md:py-2 py-1 text-sm md:text-md text-white bg-blue-500 rounded-md'>
             Calcular
           </button>
 
@@ -120,31 +120,31 @@ const Entregas = () => {
     <Layout >
       <div className='w-full min-h-screen'>
         {/* Filtro */}
-        <div className='flex  max-sm:flex-col md:ml-6 gap-4 p-4 bg-white shadow-2xl mt-8 md:w-fit w-full rounded-md'>
-          <h3 className="text-lg font-semibold text-center text-blue-500">Defina o periodo</h3>
+        <div className='flex   md:ml-6 md:gap-4 md:p-4 gap-1 p-2 bg-white shadow-2xl mt-8 md:w-fit w-fit rounded-md m-auto'>
+          <h3 className="md:text-lg text-md font-semibold text-center text-blue-500">Período de</h3>
           <input
             type="date"
             value={filtros.dataInicio}
             onChange={(e) => setFiltros({ ...filtros, dataInicio: e.target.value })}
-            className="border p-2 rounded-md"
+            className="border md:p-2  rounded-md"
           />
           <input
             type="date"
             value={filtros.dataFim}
             onChange={(e) => setFiltros({ ...filtros, dataFim: e.target.value })}
-            className="border p-2 rounded-md"
+            className="border md:p-2  rounded-md"
           />
         </div>
         {/* ======================================================= */}
 
-        <div className='flex flex-col mt-8 px-6 mb-10'>
-          <h1 className='text-xl font-bold mb-3'>Escolha a Empresa</h1>
+        <div className='flex flex-col mt-8 px-6 md:mb-10 mb-2'>
+          <h1 className='md:text-xl text-md font-bold mb-3'>Escolha a Empresa</h1>
           <div className='flex flex-wrap gap-4'>
             {
               empresas && empresas.map((item) => (
                 <button
                   onClick={() => empresaFiltrarItems(item)}
-                  className='bg-gray-400 cursor-pointer px-3 py-1 rounded-md uppercase text-white' key={item}>{item}</button>
+                  className='bg-gray-400 md:text-md text-sm cursor-pointer px-3 py-1 rounded-md uppercase text-white' key={item}>{item}</button>
               ))
             }
 

@@ -78,40 +78,43 @@ export default function TabelaRefeicoes() {
 
       {/* Filtros */}
       <div className="flex flex-wrap max-sm:flex-col items-center gap-4 mb-6 justify-between w-full bg-white shadow-2xl rounded-md p-4">
-        <div className="flex flex-wrap max-sm:flex-col items-center gap-4">
-          <h3 className="text-lg font-semibold text-center text-blue-500">Filtrar</h3>
-          <input
-            type="date"
-            value={filtros.dataInicio}
-            onChange={(e) => setFiltros({ ...filtros, dataInicio: e.target.value })}
-            className="border p-2 rounded-md"
-          />
-          <input
-            type="date"
-            value={filtros.dataFim}
-            onChange={(e) => setFiltros({ ...filtros, dataFim: e.target.value })}
-            className="border p-2 rounded-md"
-          />
-          <select
-            value={filtros.refeicao}
-            onChange={(e) => setFiltros({ ...filtros, refeicao: e.target.value })}
-            className="border p-2 rounded-md"
-          >
-            <option value="">Todas as Refeições</option>
-            <option value="Café">Café</option>
-            <option value="Almoço">Almoço</option>
-            <option value="Janta">Janta</option>
-          </select>
-          <select
-            value={filtros.status}
-            onChange={(e) => setFiltros({ ...filtros, status: e.target.value })}
-            className="border p-2 rounded-md"
-          >
-            <option value="">Todos os Status</option>
-            <option value="Entregue">Entregue</option>
-            <option value="Pendente">Pendente</option>
-            <option value="Cancelado">Cancelado</option>
-          </select>
+        <div className="flex flex-col max-sm:flex-col items-center gap-4 w-full">
+          <h3 className="text-xl font-semibold text-center text-blue-500">Filtrar</h3>
+          <div className="w-full flex flex-wrap justify-around gap-4">
+            <input
+              type="date"
+              value={filtros.dataInicio}
+              onChange={(e) => setFiltros({ ...filtros, dataInicio: e.target.value })}
+              className="border p-2 rounded-md"
+            />
+            <input
+              type="date"
+              value={filtros.dataFim}
+              onChange={(e) => setFiltros({ ...filtros, dataFim: e.target.value })}
+              className="border p-2 rounded-md"
+            />
+            <select
+              value={filtros.refeicao}
+              onChange={(e) => setFiltros({ ...filtros, refeicao: e.target.value })}
+              className="border p-2 rounded-md"
+            >
+              <option value="">Todas as Refeições</option>
+              <option value="Café">Café</option>
+              <option value="Almoço">Almoço</option>
+              <option value="Janta">Janta</option>
+            </select>
+            <select
+              value={filtros.status}
+              onChange={(e) => setFiltros({ ...filtros, status: e.target.value })}
+              className="border p-2 rounded-md"
+            >
+              <option value="">Todos os Status</option>
+              <option value="Entregue">Entregue</option>
+              <option value="Pendente">Pendente</option>
+              <option value="Cancelado">Cancelado</option>
+            </select>
+
+          </div>
 
         </div>
 
