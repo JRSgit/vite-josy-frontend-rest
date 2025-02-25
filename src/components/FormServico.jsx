@@ -19,7 +19,7 @@ const FormServico = () => {
     defaultValues: {
       refeicao: '',
       quantidade: 1,
-      status: '',
+      status: 'Entregue',
       dataTime: data_atual || '',
       empresa: slug || ''
     }
@@ -73,8 +73,7 @@ const FormServico = () => {
             <select
               {...register('status', { required: 'Selecione o status' })}
               className="p-2 bg-gray-300 rounded-md" name="status" id="status">
-              <option className="text-sm md:text-base" value="">Selecione um status</option>
-              <option className='text-sm md:text-md' value="Entregue">Entregue</option>
+              <option selected={true} className='text-sm md:text-md' value="Entregue">Entregue</option>
               <option className='text-sm md:text-md' value="Pendente">Pendente</option>
               <option className='text-sm md:text-md' value="Cancelado">Cancelado</option>
             </select>

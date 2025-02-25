@@ -141,8 +141,10 @@ const AppProvider = ({ children }) => {
     try {
       const resp = await postEntrega(data, token)
       handleSetItems(resp)
+      toast.success('Entregra cadastrada com sucesso!', { autoClose: 2000 })
 
     } catch (error) {
+      toast.error('Error cadastrada entregra!', { autoClose: 2000 })
       return console.log(error)
     }
   }
@@ -151,9 +153,11 @@ const AppProvider = ({ children }) => {
       const resp = await postEmpresa(data, token)
       if (resp.data) {
         setEmpresas((prev) => [...prev, resp.data])
+        toast.success('Empresa cadastrada com sucesso!', { autoClose: 2000 })
       }
 
     } catch (error) {
+      toast.error('Error cadastrada empresa!', { autoClose: 2000 })
       return console.log(error)
     }
   }
