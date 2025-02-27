@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 
 import { AppContext } from "./context/AppContext"
 import { Routes, Route } from "react-router-dom"
@@ -12,7 +12,11 @@ import App from "./App"
 import Empresas from "./pages/Empresas"
 
 const AllRouter = () => {
-  const { login } = useContext(AppContext)
+  const { login, handleIfLogin } = useContext(AppContext)
+
+  useEffect(() => {
+    handleIfLogin()
+  }, [])
 
   return (
     <>

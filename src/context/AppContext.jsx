@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { createContext, useEffect, useState } from "react";
 import { deleteEmpresa, getEmpresas, getEntregas, getUserOne, postEmpresa, postEntrega, postUser, postUserSession, updateItem, updateUserLogout } from "../services/api";
@@ -68,6 +69,8 @@ const AppProvider = ({ children }) => {
         if (login) {
           await handleGetItemsStart()
           await handleGetEmpresas()
+        } else {
+          handleLogout()
         }
 
       } catch (error) {
@@ -94,6 +97,7 @@ const AppProvider = ({ children }) => {
     localStorage.removeItem('empresas')
     localStorage.removeItem('loading')
     localStorage.removeItem('token')
+    localStorage.removeItem('login')
     localStorage.removeItem('items')
     localStorage.removeItem('user')
     setLogin(false)
@@ -104,7 +108,7 @@ const AppProvider = ({ children }) => {
   }
 
   const handleIfLogin = async () => {
-    if (user.email) {
+    if (!user.email) {
       handleLogout()
 
     }
