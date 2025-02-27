@@ -3,6 +3,7 @@ import { AppContext } from "../context/AppContext";
 import { useParams } from "react-router-dom";
 
 import ReportButton from "./ReportButton";
+import EditItem from "./EditItem";
 
 // const items = [
 //   { id: 1, refeicao: "Café", quantidade: 40, status: "Entregue", data: "2025-02-13" },
@@ -18,8 +19,11 @@ import ReportButton from "./ReportButton";
 // ];
 
 export default function TabelaRefeicoes() {
-  const { handleGetItems, handleUpdateItem, items } = useContext(AppContext)
+  const { handleGetItems, items } = useContext(AppContext)
   const { slug } = useParams()
+
+  const [isOpen, setIsOpen] = useState(false)
+  const [isItem, setIsItem] = useState()
 
   const [total, setTotal] = useState()
   const [dados, setDados] = useState([])
@@ -41,17 +45,18 @@ export default function TabelaRefeicoes() {
   }, [dados, filtros])
 
 
-  const handleChangeStatus = async (id, novoStatus) => {
-    const resp = await handleUpdateItem(id, novoStatus)
-    if (!resp) {
-      return
-    }
+  const handleChangeEdit = async (item) => {
+    // const resp = await handleUpdateItem(id, novoStatus)
+    // if (!resp) {
+    //   return
+    // }
 
-    const novosDados = dados.map(item =>
-      item.id === id ? { ...item, status: novoStatus } : item
-    );
-    setDados(() => novosDados.slice().reverse());
-
+    // const novosDados = dados.map(item =>
+    //   item.id === id ? { ...item, status: novoStatus } : item
+    // );
+    // setDados(() => novosDados.slice().reverse());
+    setIsOpen(true)
+    setIsItem(item)
   };
 
   const calculaTotal = () => {
@@ -72,7 +77,7 @@ export default function TabelaRefeicoes() {
   };
 
   return (
-    <div className="md:p-6 w-full mx-auto">
+    <div className={`md:p-6 w-full mx-auto `}>
 
       <ReportButton data={filtrarItems()} />
 
@@ -128,7 +133,7 @@ export default function TabelaRefeicoes() {
 
 
       {/* Tabela */}
-      <table className="w-full table rounded-md overflow-hidden shadow-2xl">
+      <table className="w-full table rounded-md overflow-hidden shadow-2xl relatives">
         <thead>
           <tr className="bg-gray-200">
             <th className=" max-sm:hidden p-2">ID</th>
@@ -145,17 +150,19 @@ export default function TabelaRefeicoes() {
               <td className=" p-2">{item.refeicao}</td>
               <td className=" p-2">{item.quantidade}</td>
               <td className=" p-2">{item.status}</td>
-              <td className=" p-2 ">
-                <select value={item.status} onChange={e => handleChangeStatus(item.id, e.target.value)} className="p-1 cursor-pointer">
-                  <option value="Entregue">Entregue</option>
-                  <option value="Pendente">Pendente</option>
-                  <option value="Cancelado">Cancelado</option>
-                </select>
+              <td
+                onClick={() => handleChangeEdit(item)}
+                className=" p-2 cursor-pointer">
+                Editar
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {
+        isOpen ? (<EditItem setIsOpen={setIsOpen} item={isItem} />) : ('')
+      }
     </div>
   );
 }

@@ -7,7 +7,7 @@ import Loading from "../components/Loading";
 const Login = () => {
   const navigate = useNavigate()
 
-  const { handlePostUserSession, loading } = useContext(AppContext)
+  const { handlePostUserSession, handleIfLogin, loading } = useContext(AppContext)
   const { register, handleSubmit, } = useForm({
     defaultValues: {
       email: '',
@@ -22,6 +22,10 @@ const Login = () => {
 
   useEffect(() => {
     navigate('/')
+  }, [])
+
+  useEffect(() => {
+    handleIfLogin()
   }, [])
 
   return (

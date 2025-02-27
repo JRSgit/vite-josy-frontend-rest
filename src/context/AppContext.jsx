@@ -2,6 +2,7 @@
 import { createContext, useEffect, useState } from "react";
 import { deleteEmpresa, getEmpresas, getEntregas, getUserOne, postEmpresa, postEntrega, postUser, postUserSession, updateItem, updateUserLogout } from "../services/api";
 import { toast } from "react-toastify";
+import { format } from "date-fns";
 
 export const AppContext = createContext()
 
@@ -26,6 +27,14 @@ const AppProvider = ({ children }) => {
   const [token, setToken] = useState(() => loadFromLocalStorage('token', ''))
   const [empresas, setEmpresas] = useState(() => loadFromLocalStorage('empresas', []))
   const [loading, setLoading] = useState(() => loadFromLocalStorage('loading', false))
+
+  const dataInput = format(new Date().toString(), 'yyyy-MM-dd')
+
+  const [cafe, setCafe] = useState(() => items.filter((item) => item.refeicao === 'Café'))
+  const [janta, setJanta] = useState(() => items.filter((item) => item.refeicao === 'Janta'))
+  const [almoco, setAlmoco] = useState(() => items.filter((item) => item.refeicao === 'Almoço'))
+
+
 
   // Salva o estado login no localStorage sempre que o estado é atualizado
   useEffect(() => {
@@ -54,10 +63,19 @@ const AppProvider = ({ children }) => {
 
 
   useEffect(() => {
-    if (login) {
-      handleGetItemsStart()
-      handleGetEmpresas()
+    const loginOn = async () => {
+      try {
+        if (login) {
+          await handleGetItemsStart()
+          await handleGetEmpresas()
+        }
+
+      } catch (error) {
+        console.log(error)
+        return
+      }
     }
+    loginOn()
   }, [login])
 
   // ======================================
@@ -85,22 +103,40 @@ const AppProvider = ({ children }) => {
     setItems((prev) => [...prev, data])
   }
 
+  const handleIfLogin = async () => {
+    if (user.email) {
+      handleLogout()
+
+    }
+  }
+
   // Function Get =========================================
 
   async function handleGetItemsStart() {
-    const data = await getEntregas(token)
-    if (data.length > items.length) {
-      setItems(data)
+    try {
+      const resp = await getEntregas(token)
+      if (resp.data.length !== items.length) {
+        setItems(resp.data)
+      }
+      return resp.data;
+
+    } catch (error) {
+      toast.error("Não conseguir resposta do servidor")
+      return
     }
-    return data;
   }
 
   async function handleGetEmpresas() {
-    const data = await getEmpresas(token)
-    if (data.length > empresas.length) {
-      setEmpresas(data)
+    try {
+      const resp = await getEmpresas(token)
+      if (resp.data.length > empresas.length) {
+        setEmpresas(resp.data)
+      }
+      return resp.data;
+
+    } catch (error) {
+      toast.error("Não teve resposta do servidor")
     }
-    return data;
   }
 
   // Items filtrado por empresa ==============
@@ -139,6 +175,11 @@ const AppProvider = ({ children }) => {
 
   async function handlePostEntregas(data) {
     try {
+
+      if (data.dataTime === '') {
+        data.dataTime = dataInput
+      }
+
       const resp = await postEntrega(data, token)
       handleSetItems(resp)
       toast.success('Entregra cadastrada com sucesso!', { autoClose: 2000 })
@@ -153,6 +194,7 @@ const AppProvider = ({ children }) => {
       const resp = await postEmpresa(data, token)
       if (resp.data) {
         setEmpresas((prev) => [...prev, resp.data])
+
         toast.success('Empresa cadastrada com sucesso!', { autoClose: 2000 })
       }
 
@@ -182,12 +224,20 @@ const AppProvider = ({ children }) => {
 
   // Function Update =====================================================
 
-  async function handleUpdateItem(id, data) {
+  async function handleUpdateItem(id, dados) {
     try {
-      const dados = { status: data }
-      await updateItem(id, dados, token)
+      // const dados = { status: data }
+      const resp = await updateItem(id, dados, token)
+      if (resp.status === 200) {
+        const itemsAtualizado = items.map(item =>
+          item.id === id ? { ...item, status: dados.status, quantidade: dados.quantidade, data: dados.data } : item
+        );
+        setItems(itemsAtualizado)
 
-      return true
+        toast.success('Item atualizado com sucesso', { autoClose: 2000 })
+
+      }
+
     } catch (error) {
       toast.error(error.response.data.error)
       return false
@@ -210,12 +260,16 @@ const AppProvider = ({ children }) => {
   // =====================================================================
   return (
     <AppContext.Provider value={{
+      cafe,
       user,
+      janta,
       login,
       items,
+      almoco,
       loading,
       empresas,
       handleLogout,
+      handleIfLogin,
       handleSetLogin,
       handleSetItems,
       handleGetItems,

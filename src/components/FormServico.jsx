@@ -3,19 +3,15 @@ import { useContext, useState } from 'react'
 import { AppContext } from '../context/AppContext'
 import { useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-// import { v4 as uuidV4 } from 'uuid'
-import { format } from 'date-fns'
 
 const FormServico = () => {
   const { handlePostEntregas } = useContext(AppContext)
   const { slug } = useParams()
-  const dataInput = format(new Date().toString(), 'yyyy-MM-dd')
 
-  const [data_atual, setData_atual] = useState(() => format(new Date().toISOString(), 'yyyy-MM-dd'))
 
-  // console.log(data_atual,)
+  const [data_atual, setData_atual] = useState()
 
-  const { register, reset, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       refeicao: '',
       quantidade: 1,
@@ -29,8 +25,7 @@ const FormServico = () => {
     // data.id = uuidV4()
     // handleSetItems(data)
     handlePostEntregas(data)
-    // console.log(data)
-    reset()
+    // reset()
   }
 
 
@@ -83,10 +78,8 @@ const FormServico = () => {
             <label className="text-gray-400 text-sm md:text-md" htmlFor="dataTime">Data:</label>
             <input
               name='dataTime'
-              defaultValue={dataInput}
-              value={data_atual}
               onChange={(e) => setData_atual(e.target.value)}
-              // {...register('dataTime')}
+              {...register('dataTime')}
               className="p-2 bg-gray-300 rounded-md" type="date"
             />
             {errors.dataTime && <span className='text-orange-500'>{errors.dataTime.message}</span>}

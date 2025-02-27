@@ -77,19 +77,15 @@ async function getEntregaOne(id) {
 }
 
 async function getEntregas(token) {
-  try {
-    const resp = await api.get(`/entregas`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
 
-    return resp.data
+  const resp = await api.get(`/entregas`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
 
-  } catch (error) {
-    console.log(error)
-    return error
-  }
+  return resp
+
 }
 
 async function postEntrega(data, token) {
@@ -162,19 +158,14 @@ async function getEmpresaOne(id) {
 }
 
 async function getEmpresas(token) {
-  try {
-    const resp = await api.get(`/empresas`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
 
-    return resp.data
+  const resp = await api.get(`/empresas`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
 
-  } catch (error) {
-    console.log(error)
-    return error
-  }
+  return resp
 }
 
 async function postEmpresa(data, token) {

@@ -20,7 +20,7 @@ const CadastroEmpresa = () => {
 
   return (
     <div className="w-full ">
-      <h1 className="md:text-3xl text-xl mb-3 text-gray-500 font-semibold">Cadastrar Empresa</h1>
+      <h1 className="md:text-xl text-center text-xl mb-3 text-gray-500 font-semibold">Cadastrar Empresa</h1>
       <form
         onSubmit={handleSubmit(handleSavarEmpresa)}
         className='flex flex-col gap-3 p-6 rounded-xl bg-white shadow-2xl'>

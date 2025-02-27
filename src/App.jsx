@@ -10,6 +10,7 @@ import EmpresaCadastrada from './components/EmpresaCadastrada '
 import UltimasEntregas from './components/UltimasEntregas'
 import { AppContext } from './context/AppContext'
 import Layout from './components/Layout'
+import CardTotais from './components/CardTotais'
 // import { calcularQuantidades, sumDailyQuantities } from './components/CalculaSemanaMes'
 
 function App() {
@@ -37,11 +38,15 @@ function App() {
 
   return (
     <Layout>
-      <div className='grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 w-full gap-4 px-6 mt-10'>
-        <CadastroEmpresa />
+      <CardTotais />
+      <div className='min-h-[2px] bg-gray-300 w-full mt-10 ' />
+      <div className='grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 w-full gap-4 px-6 mt-5'>
         <EmpresaCadastrada />
+        <CadastroEmpresa />
         <UltimasEntregas />
       </div>
+
+      <div className='min-h-[2px] bg-gray-300 w-full mt-10 ' />
 
       <div className='  flex max-sm:flex-col md:ml-6 gap-4 p-4 bg-white shadow-2xl mt-8 w-full md:w-fit rounded-md'>
         <h3 className="md:text-xl text-lg  font-semibold text-center text-blue-500">
