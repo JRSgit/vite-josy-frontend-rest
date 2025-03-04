@@ -12,7 +12,7 @@ import App from "./App"
 import Empresas from "./pages/Empresas"
 
 const AllRouter = () => {
-  const { login, handleIfLogin } = useContext(AppContext)
+  const { token, handleIfLogin } = useContext(AppContext)
 
   useEffect(() => {
     handleIfLogin()
@@ -21,7 +21,7 @@ const AllRouter = () => {
   return (
     <>
       {
-        login ? (
+        token ? (
           <Routes>
             <Route index element={<App />} />
             <Route path="/add_servico/:slug" element={<AddServico />} />

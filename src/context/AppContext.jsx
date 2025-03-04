@@ -1,9 +1,21 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { createContext, useEffect, useState } from "react";
-import { deleteEmpresa, getEmpresas, getEntregas, getUserOne, postEmpresa, postEntrega, postUser, postUserSession, updateItem, updateUserLogout } from "../services/api";
+import {
+  deleteEmpresa,
+  getEmpresas,
+  getEntregas,
+  getUserOne,
+  postEmpresa,
+  postEntrega,
+  postUser,
+  postUserSession,
+  updateItem,
+  updateUserLogout
+} from "../services/api";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
+import { redirect } from "react-router-dom";
 
 export const AppContext = createContext()
 
@@ -31,11 +43,20 @@ const AppProvider = ({ children }) => {
 
   const dataInput = format(new Date().toString(), 'yyyy-MM-dd')
 
-  const [cafe, setCafe] = useState(() => items.filter((item) => item.refeicao === 'Café'))
-  const [janta, setJanta] = useState(() => items.filter((item) => item.refeicao === 'Janta'))
-  const [almoco, setAlmoco] = useState(() => items.filter((item) => item.refeicao === 'Almoço'))
+  const [cafe, setCafe] = useState(() => loadFromLocalStorage('cafe', ''))
+  const [janta, setJanta] = useState(() => loadFromLocalStorage('janta', ''))
+  const [almoco, setAlmoco] = useState(() => loadFromLocalStorage('almoco', ''))
 
 
+  const handleItemsTotal = () => {
+    if (items.length > 0) {
+      setCafe(() => items.filter((item) => item.refeicao === 'Café'))
+      setJanta(() => items.filter((item) => item.refeicao === 'Janta'))
+      setAlmoco(() => items.filter((item) => item.refeicao === 'Almoço'))
+
+    }
+
+  }
 
   // Salva o estado login no localStorage sempre que o estado é atualizado
   useEffect(() => {
@@ -43,6 +64,7 @@ const AppProvider = ({ children }) => {
   }, [login])
 
   useEffect(() => {
+    handleItemsTotal()
     saveToLocalStorage('items', items)
   }, [items])
 
@@ -62,6 +84,18 @@ const AppProvider = ({ children }) => {
     saveToLocalStorage('loading', loading)
   }, [loading])
 
+  useEffect(() => {
+    saveToLocalStorage('cafe', cafe)
+  }, [cafe])
+
+  useEffect(() => {
+    saveToLocalStorage('almoco', almoco)
+  }, [almoco])
+
+  useEffect(() => {
+    saveToLocalStorage('janta', janta)
+  }, [janta])
+
 
   useEffect(() => {
     const loginOn = async () => {
@@ -69,8 +103,7 @@ const AppProvider = ({ children }) => {
         if (login) {
           await handleGetItemsStart()
           await handleGetEmpresas()
-        } else {
-          handleLogout()
+
         }
 
       } catch (error) {
@@ -79,7 +112,7 @@ const AppProvider = ({ children }) => {
       }
     }
     loginOn()
-  }, [login])
+  }, [login, token])
 
   // ======================================
 
@@ -92,15 +125,22 @@ const AppProvider = ({ children }) => {
       email: user.email,
       isLoged: false
     }
+    if (user.email) {
+      updateUserLogout(data)
 
-    await updateUserLogout(data)
+    }
     localStorage.removeItem('empresas')
     localStorage.removeItem('loading')
-    localStorage.removeItem('token')
+    setToken(null)
     localStorage.removeItem('login')
     localStorage.removeItem('items')
     localStorage.removeItem('user')
+    localStorage.removeItem('token')
+    localStorage.removeItem('cafe')
+    localStorage.removeItem('almoco')
+    localStorage.removeItem('janta')
     setLogin(false)
+    redirect('/')
   }
 
   const handleSetItems = (data) => {
@@ -108,10 +148,7 @@ const AppProvider = ({ children }) => {
   }
 
   const handleIfLogin = async () => {
-    if (!user.email) {
-      handleLogout()
-
-    }
+    await handleLogout()
   }
 
   // Function Get =========================================
@@ -268,6 +305,7 @@ const AppProvider = ({ children }) => {
       user,
       janta,
       login,
+      token,
       items,
       almoco,
       loading,

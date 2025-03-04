@@ -10,6 +10,11 @@ import { format } from 'date-fns'
 
 
 const ItemCard = ({ qtd, nome, color, periodo }) => {
+
+  useEffect(() => {
+    console.log(qtd)
+  }, [qtd, nome])
+
   return (
     <div className='bg-white rounded-sm shadow-2xl md:p-3 p-1 flex gap-4 items-center justify-items-start'>
       {
@@ -41,43 +46,49 @@ const CardTotais = () => {
   const [mesCafe, setMesCafe] = useState()
 
   useEffect(() => {
-    const calculoTotaisSemanais = async () => {
-      const cafesemana = sumDailyQuantities(cafe)
-      const amolcosemana = sumDailyQuantities(almoco)
-      const jantasemana = sumDailyQuantities(janta)
+    calculoTotaisSemanais(cafe, almoco, janta)
 
-      const cafeTotal = cafesemana.reduce((acc, item) => acc + item.quantidade, 0)
-      setSemanaCafe(cafeTotal)
-
-      const almocoTotal = amolcosemana.reduce((acc, item) => acc + item.quantidade, 0)
-      setSemanaAlmoco(almocoTotal)
-
-      const jantaTotal = jantasemana.reduce((acc, item) => acc + item.quantidade, 0)
-      setSemanaJanta(jantaTotal)
-
-      const mesalmoco = calcularQuantidades(almoco)
-      const mesjanta = calcularQuantidades(janta)
-      const mescafe = calcularQuantidades(cafe)
-
-      // Retorna o total de café entregue no mês
-      const cTotalMes = mescafe.mesesArray.map((item) => item)
-      const cafeInMes = cTotalMes.map((item) => item[mesAtual])
-      setMesCafe(cafeInMes[0])
-
-      // Retorna o total de almoço entregue no mês
-      const aTotalMes = mesalmoco.mesesArray.map((item) => item)
-      const aInMes = aTotalMes.map((item) => item[mesAtual])
-      setMesAlmoco(aInMes[0])
-
-      // Retorna o total de jantas entregue no mês
-      const jTotalMes = mesjanta.mesesArray.map((item) => item)
-      const jInMes = jTotalMes.map((item) => item[mesAtual])
-      setMesJanta(jInMes[0])
-
-
-    }
-    calculoTotaisSemanais()
   }, [])
+
+
+  const calculoTotaisSemanais = async (cafe, almoco, janta) => {
+    console.log('Inicio da funcao')
+    const cafesemana = sumDailyQuantities(cafe)
+    const amolcosemana = sumDailyQuantities(almoco)
+    const jantasemana = sumDailyQuantities(janta)
+
+    console.log(cafesemana)
+    const cafeTotal = cafesemana.reduce((acc, item) => acc + item.quantidade, 0)
+    setSemanaCafe(cafeTotal)
+
+    const almocoTotal = amolcosemana.reduce((acc, item) => acc + item.quantidade, 0)
+    setSemanaAlmoco(almocoTotal)
+
+    const jantaTotal = jantasemana.reduce((acc, item) => acc + item.quantidade, 0)
+    setSemanaJanta(jantaTotal)
+
+    const mesalmoco = calcularQuantidades(almoco)
+    const mesjanta = calcularQuantidades(janta)
+    const mescafe = calcularQuantidades(cafe)
+    // Retorna o total de café entregue no mês
+    const cTotalMes = mescafe.mesesArray.map((item) => item)
+    const cafeInMes = cTotalMes.map((item) => item[mesAtual])
+    setMesCafe(cafeInMes.pop())
+    console.log(cafeInMes.pop())
+
+    // Retorna o total de almoço entregue no mês
+    const aTotalMes = mesalmoco.mesesArray.map((item) => item)
+    const aInMes = aTotalMes.map((item) => item[mesAtual])
+    setMesAlmoco(aInMes.pop())
+
+    // Retorna o total de jantas entregue no mês
+    const jTotalMes = mesjanta.mesesArray.map((item) => item)
+    const jInMes = jTotalMes.map((item) => item[mesAtual])
+    setMesJanta(jInMes.pop())
+
+    console.log('fim da funcao')
+
+  }
 
   return (
     <div className='grid md:grid-cols-6 grid-cols-2 sm:grid-cols-4 px-2 gap-4 mt-5'>
