@@ -1,6 +1,6 @@
-/* eslint-disable no-unused-vars */
+
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -67,10 +67,15 @@ const ReportButton = ({ data }) => {
   const [precoCafe, setPrecoCafe] = useState(0)
   // const [precoJanta, setPrecoJanta] = useState(0)
   const [precoAlmoco, setPrecoAlmoco] = useState(0)
-  const [cafe, setCafe] = useState(() => data.filter((item) => item.refeicao === 'Café'))
-  const [janta, setJanta] = useState(() => data.filter((item) => item.refeicao === 'Janta'))
-  const [almoco, setAlmoco] = useState(() => data.filter((item) => item.refeicao === 'Almoço'))
+  const [cafe, setCafe] = useState()
+  const [janta, setJanta] = useState()
+  const [almoco, setAlmoco] = useState()
 
+  useEffect(() => {
+    setCafe(() => data.filter((item) => item.refeicao === 'Café'))
+    setJanta(() => data.filter((item) => item.refeicao === 'Janta'))
+    setAlmoco(() => data.filter((item) => item.refeicao === 'Almoço'))
+  }, [data])
   // const uper = toString(slug).toUpperCase()
   const handleExportExcel = () => {
     const ws = utils.json_to_sheet(data);
