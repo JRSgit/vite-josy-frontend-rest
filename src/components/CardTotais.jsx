@@ -11,10 +11,6 @@ import { format } from 'date-fns'
 
 const ItemCard = ({ qtd, nome, color, periodo }) => {
 
-  useEffect(() => {
-    console.log(qtd)
-  }, [qtd, nome])
-
   return (
     <div className='bg-white rounded-sm shadow-2xl md:p-3 p-1 flex gap-4 items-center justify-items-start'>
       {
@@ -52,12 +48,10 @@ const CardTotais = () => {
 
 
   const calculoTotaisSemanais = async (cafe, almoco, janta) => {
-    console.log('Inicio da funcao')
     const cafesemana = sumDailyQuantities(cafe)
     const amolcosemana = sumDailyQuantities(almoco)
     const jantasemana = sumDailyQuantities(janta)
 
-    console.log(cafesemana)
     const cafeTotal = cafesemana.reduce((acc, item) => acc + item.quantidade, 0)
     setSemanaCafe(cafeTotal)
 
@@ -74,7 +68,6 @@ const CardTotais = () => {
     const cTotalMes = mescafe.mesesArray.map((item) => item)
     const cafeInMes = cTotalMes.map((item) => item[mesAtual])
     setMesCafe(cafeInMes.pop())
-    console.log(cafeInMes.pop())
 
     // Retorna o total de almoço entregue no mês
     const aTotalMes = mesalmoco.mesesArray.map((item) => item)
@@ -85,8 +78,6 @@ const CardTotais = () => {
     const jTotalMes = mesjanta.mesesArray.map((item) => item)
     const jInMes = jTotalMes.map((item) => item[mesAtual])
     setMesJanta(jInMes.pop())
-
-    console.log('fim da funcao')
 
   }
 

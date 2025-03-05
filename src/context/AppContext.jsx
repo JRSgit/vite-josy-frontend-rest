@@ -49,7 +49,7 @@ const AppProvider = ({ children }) => {
 
 
   const handleItemsTotal = () => {
-    if (items.length > 0) {
+    if (items.length > 0 && login) {
       setCafe(() => items.filter((item) => item.refeicao === 'Café'))
       setJanta(() => items.filter((item) => item.refeicao === 'Janta'))
       setAlmoco(() => items.filter((item) => item.refeicao === 'Almoço'))
